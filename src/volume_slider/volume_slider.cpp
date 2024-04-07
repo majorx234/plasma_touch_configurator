@@ -1,4 +1,5 @@
-#include "volume_slider"
+#include "volume_slider.hpp"
+
 VolumeSlider::VolumeSlider(QWidget *parent){}
 void VolumeSlider::setValue(int value){}
 void VolumeSlider::setMinimum(int value){}

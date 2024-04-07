@@ -7,15 +7,19 @@ set(RELEASE_SERVICE_VERSION_MICRO "0")
 set(RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 
 set(PLASMA_TOUCH_CONFIGURATOR_VERSION ${RELEASE_SERVICE_VERSION})
-project(plasma_touch_konfigurator VERSION ${PLASMA_TOUCH_CONFIGURATOR_VERSION})
+project(plasma_touch_configurator
+  DESCRIPTION "important configuration in one window for KDE plasma"
+  VERSION ${PLASMA_TOUCH_CONFIGURATOR_VERSION}
+  LANGUAGES CXX)
 # SOVERSION of the kmixcore library
 set(PLASMA_TOUCH_CONFIGURATOR_VERSION_MAJOR 0)
 
-set(QT_MIN_VERSION "5.15.2")
-set(KF5_MIN_VERSION "5.101.0")
+set(QT_MIN_VERSION "6.6.1")
+set(QT_MAJOR_VERSION "6")
+set(KF6_MIN_VERSION "6.0.0")
 set(PA_MIN_VERSION "0.9.16")
 set(KDE_COMPILERSETTINGS_LEVEL "5.82")
-find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} )
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -33,7 +37,6 @@ find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONEN
     Gui
     Widgets
 )
-
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Config
@@ -69,3 +72,24 @@ message(STATUS "Supported backends: ${SUPPORTED_BACKENDS}")
 ####################################################################################################
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+
+set(VOLUME_SLIDER_HEADERS
+  include/volume_slider.hpp
+)
+set(VOLUME_SLIDER_SOURCES
+  src/volume_slider/volume_slider.cpp
+)
+
+qt_add_library(volume_slider
+  SHARED
+  ${VOLUME_SLIDER_HEADERS}
+  ${VOLUME_SLIDER_SOURCES}
+)
+target_include_directories(volume_slider PRIVATE
+  include
+)
+target_link_libraries(volume_slider PRIVATE
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+)
